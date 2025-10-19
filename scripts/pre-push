@@ -1,17 +1,27 @@
 #!/bin/bash
 
-# Pre-push hook to run ruff check
+set -euo pipefail
 
-echo "Running ruff check..."
+# Pre-push hook to run ruff checks
 
-if ! ruff check .; then
-    echo "Ruff check failed. Please fix the issues before pushing."
-    exit 1
+# Determine repo root and prefer venv ruff
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+RUFF_CMD="$REPO_ROOT/venv/bin/ruff"
+if [ ! -x "$RUFF_CMD" ]; then
+  RUFF_CMD="ruff"
 fi
 
-if ! ruff format --check .; then
-    echo "Ruff format check failed. Please run 'ruff format .' to fix."
-    exit 1
+echo "running ruff checks..."
+if ! $RUFF_CMD check .; then
+  echo "Ruff check failed. Please fix the issues before pushing."
+  exit 1
+fi
+
+if ! $RUFF_CMD format --check .; then
+  echo "Ruff format check failed. Please run 'ruff format .' to fix."
+  exit 1
 fi
 
 echo "Ruff checks passed."

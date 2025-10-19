@@ -27,7 +27,9 @@ def transcribe_audio(model, processor, audio_path):
         import torch
 
         inputs.attention_mask = torch.ones(
-            inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long
+            inputs.input_features.shape[0],
+            inputs.input_features.shape[1],
+            dtype=torch.long,
         )
 
     # Generate transcription using fine-tuned model

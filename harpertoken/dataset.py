@@ -32,14 +32,18 @@ class LiveSpeechDataset(Dataset):
         # In CI or environments without PortAudio, fall back to dummy audio
         if os.environ.get("CI") == "true":
             dummy_duration_seconds = 1
-            dummy_audio = np.zeros(self.sample_rate * dummy_duration_seconds, dtype=np.float32)
+            dummy_audio = np.zeros(
+                self.sample_rate * dummy_duration_seconds, dtype=np.float32
+            )
             self.recordings.append(dummy_audio)
         else:
             try:
                 self.record_audio()
             except Exception:
                 dummy_duration_seconds = 1
-                dummy_audio = np.zeros(self.sample_rate * dummy_duration_seconds, dtype=np.float32)
+                dummy_audio = np.zeros(
+                    self.sample_rate * dummy_duration_seconds, dtype=np.float32
+                )
                 self.recordings.append(dummy_audio)
 
     def __len__(self):
