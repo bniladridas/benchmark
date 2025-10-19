@@ -39,6 +39,27 @@ python tests/test_transcription.py --model wav2vec2
 * `scripts/commit-msg` – Commit validator
 * `main.py` – Entry point
 
+## Usage
+
+```python
+from harpertoken.models.model import CMAESAgent
+
+# Load pretrained model
+agent = CMAESAgent.from_pretrained("harpertoken/harpertoken-cartpole")
+
+# Use for inference
+action = agent.get_action(state)
+# or evaluate performance
+mean_reward, std_reward = agent.evaluate(num_episodes=10)
+```
+
+## Testing the Model
+
+```python
+from harpertoken.evaluation.test_model import test_model
+test_model(agent, num_episodes=5)
+```
+
 ## Commit Format
 
 ```
