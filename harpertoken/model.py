@@ -1,10 +1,12 @@
 import torch
 import torch.nn as nn
 import warnings
+import logging
 from transformers import Wav2Vec2Model, WhisperForConditionalGeneration
 
 # Suppress model weight warnings
 warnings.simplefilter("ignore", category=UserWarning)
+logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
 class SpeechModel(nn.Module):
     def __init__(self, model_type='whisper'):
