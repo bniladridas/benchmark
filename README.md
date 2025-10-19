@@ -100,6 +100,10 @@ run the container:
 docker run benchmark
 ```
 
+## related models
+
+- [harpertokenASR on Hugging Face](https://huggingface.co/harpertoken/harpertokenASR)
+
 ## ci workflow
 
 the ci workflow runs tests on every push and pull request to the main branch using github actions.
