@@ -63,11 +63,17 @@ def main():
     print(f"Unit tests: {'PASSED' if unit_success else 'FAILED'}")
 
     # Optionally run transcription test
-    run_e2e = (
-        input("Run transcription test? (requires audio input, may hang) [y/N]: ")
-        .lower()
-        .strip()
-    )
+    if os.environ.get('CI') == 'true':
+        run_e2e = 'n'  # Skip in CI
+    else:
+        try:
+            run_e2e = (
+                input("Run transcription test? (requires audio input, may hang) [y/N]: ")
+                .lower()
+                .strip()
+            )
+        except EOFError:
+            run_e2e = 'n'
     if run_e2e == "y":
         trans_success = run_transcription_test()
         print(f"Transcription test: {'PASSED' if trans_success else 'FAILED'}")
