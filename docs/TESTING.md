@@ -10,6 +10,9 @@ ls -l
 ### Core Tests
 
 ```bash
+# activate virtual environment
+source venv/bin/activate
+
 # main.py – verify model type
 python main.py --model_type whisper
 python main.py --model_type wav2vec2
@@ -30,6 +33,9 @@ python -c "from harpertoken.model import SpeechModel; SpeechModel('whisper')"
 ### Integration Tests
 
 ```bash
+# activate virtual environment
+source venv/bin/activate
+
 # Full training
 python main.py --model_type whisper
 
@@ -40,6 +46,9 @@ python tests/test_transcription.py --model_type whisper
 ### Environment Checks
 
 ```bash
+# activate virtual environment
+source venv/bin/activate
+
 # Dependencies
 pip install -r requirements.txt
 
