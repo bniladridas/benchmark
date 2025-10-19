@@ -31,6 +31,7 @@ def test_transcription(model_type='whisper', use_pretrained=False):
     with torch.no_grad():
         generated_ids = model.generate(
             input_features=inputs.input_features,
+            attention_mask=inputs.attention_mask if hasattr(inputs, 'attention_mask') else None,
             language='en',
             task='transcribe'
         )
