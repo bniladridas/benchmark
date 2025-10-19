@@ -10,8 +10,10 @@ import os
 def run_command(cmd):
     """Run command with venv activated"""
     venv_python = os.path.join(os.path.dirname(__file__), 'venv', 'bin', 'python')
+    env = os.environ.copy()
+    env['PYTHONPATH'] = os.path.dirname(__file__)
     full_cmd = [venv_python] + cmd
-    result = subprocess.run(full_cmd, cwd=os.path.dirname(__file__), capture_output=True, text=True)
+    result = subprocess.run(full_cmd, cwd=os.path.dirname(__file__), capture_output=True, text=True, env=env)
     return result
 
 def run_unit_tests():
@@ -26,7 +28,11 @@ def run_unit_tests():
 def run_transcription_test():
     """Run transcription test (requires audio input)"""
     print("Running transcription test (this will attempt to record audio)...")
-    result = run_command(['tests/test_transcription.py', '--model_type', 'whisper'])
+    venv_python = os.path.join(os.path.dirname(__file__), 'venv', 'bin', 'python')
+    env = os.environ.copy()
+    env['PYTHONPATH'] = os.path.dirname(__file__)
+    result = subprocess.run([venv_python, 'tests/test_transcription.py', '--model_type', 'whisper'],
+                            cwd=os.path.dirname(__file__), capture_output=True, text=True, env=env, timeout=30)
     print(result.stdout)
     if result.stderr:
         print("Errors:", result.stderr)
