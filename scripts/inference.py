@@ -18,11 +18,27 @@ def transcribe_audio(model, processor, audio_path):
     print(f"Transcribing audio file: {audio_path}")
     # Load and preprocess audio
     waveform, sample_rate = torchaudio.load(audio_path)
-    inputs = processor(waveform, sampling_rate=sample_rate, return_tensors="pt")
+    # Convert to mono 1D float32 array for the processor
+    if waveform.dim() == 2:
+        waveform = waveform.mean(dim=0)
+    inputs = processor(waveform.numpy(), sampling_rate=sample_rate, return_tensors="pt")
+
+    # Whisper expects input_features and (optionally) attention_mask
+    if not hasattr(inputs, "attention_mask") or inputs.attention_mask is None:
+        import torch
+
+        inputs.attention_mask = torch.ones(
+            inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long
+        )
 
     # Generate transcription using fine-tuned model
     with torch.no_grad():
-        generated_ids = model.generate(inputs.input_values)
+        generated_ids = model.generate(
+            input_features=inputs.input_features,
+            attention_mask=inputs.attention_mask,
+            language="en",
+            task="transcribe",
+        )
 
     # Decode transcription
     transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
