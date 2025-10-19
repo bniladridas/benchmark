@@ -1,80 +1,51 @@
-# Comprehensive Testing and Code Verification
+## Testing and Verification
 
-## File Structure Verification
+### File Check
+
 ```bash
-# Verify all required files exist
 ls -l
-# Expected: main.py, train.py, test_transcription.py, dataset.py, model.py, requirements.txt, README.md
+# Expected: main.py, train.py, test_transcription.py, dataset.py, model.py, requirements.txt
+```
 
-## Code File Functionality Tests
+### Core Tests
 
-### main.py
 ```bash
-# Test model type argument handling
+# main.py – verify model type
 python main.py --model_type whisper
 python main.py --model_type wav2vec2
-# Verify: Correct model type is loaded
 
-### train.py
-```bash
-# Test training initialization
+# train.py – verify training start
 python -c "from train import train_model; train_model('whisper')"
-# Verify: Training starts without errors
 
-### test_transcription.py
-```bash
-# Test transcription functionality
+# test_transcription.py – verify transcription
 python test_transcription.py --model_type whisper
-# Verify: Transcription output is generated
 
-# Test transcription setup
-python -c "from test_transcription import test_transcription; print('Transcription test setup successful')"
-# Verify: 'Transcription test setup successful' is printed
+# dataset.py – verify audio recording
+python -c "from dataset import LiveSpeechDataset; LiveSpeechDataset().record_audio()"
 
-### dataset.py
+# model.py – verify model load
+python -c "from model import SpeechModel; SpeechModel('whisper')"
+```
+
+### Integration Tests
+
 ```bash
-# Test audio recording
-python -c "from dataset import LiveSpeechDataset; dataset = LiveSpeechDataset(); audio = dataset.record_audio()"
-# Verify: Audio is recorded successfully
-
-### model.py
-```bash
-# Test model loading
-python -c "from model import SpeechModel; model = SpeechModel('whisper')"
-# Verify: Model is initialized correctly
-
-## Integration Tests
-
-### Full Training Pipeline
-```bash
+# Full training
 python main.py --model_type whisper
-# Verify: Training completes and model is saved
 
-### Full Transcription Pipeline
-```bash
+# Full transcription
 python test_transcription.py --model_type whisper
-# Verify: Transcription is accurate
+```
 
-## Dependency Verification
+### Environment Checks
+
 ```bash
-# Test requirements installation
+# Dependencies
 pip install -r requirements.txt
-# Verify: All dependencies install successfully
 
-## Code Quality Checks
-```bash
-# Run linter
+# Lint check
 flake8 .
-# Verify: No syntax errors or style violations
 
-## File Permissions Check
-```bash
-# Verify file permissions
-ls -l
-# Expected: All files should be readable and executable as needed
-
-## Additional Checks
-```bash
-# Test full import setup
-python -c "from dataset import LiveSpeechDataset; from train import train_model; from test_transcription import test_transcription; print('All imports successful')"
+# Import validation
+python -c "from dataset import LiveSpeechDataset; from train import train_model; from test_transcription import test_transcription; print('Imports OK')"
 ```
