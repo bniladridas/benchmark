@@ -1,24 +1,45 @@
 #!/bin/bash
 
+set -euo pipefail
+
 MSG_FILE=$1
 MSG=$(cat "$MSG_FILE")
 
-# Check if starts with conventional commit type
+# Move to the repo root for consistent paths
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+# Prefer project venv ruff, fall back to system ruff
+RUFF_CMD="$REPO_ROOT/venv/bin/ruff"
+if [ ! -x "$RUFF_CMD" ]; then
+  RUFF_CMD="ruff"
+fi
+
+echo "running ruff checks..."
+if ! $RUFF_CMD check .; then
+  echo "Ruff check failed. Please fix the issues before committing."
+  exit 1
+fi
+
+if ! $RUFF_CMD format --check .; then
+  echo "Ruff format check failed. Please run 'ruff format .' to fix."
+  exit 1
+fi
+
+# Commit message policy checks
 if ! echo "$MSG" | grep -qE "^(feat|fix|docs|style|refactor|test|chore): "; then
-    echo "Error: Commit message must start with a type: feat, fix, docs, style, refactor, test, chore"
-    exit 1
+  echo "Error: Commit message must start with a type: feat, fix, docs, style, refactor, test, chore"
+  exit 1
 fi
 
-# Check if first line is lowercase
 if echo "$MSG" | head -1 | grep -q '[A-Z]'; then
-    echo "Error: First line of commit message must be lowercase"
-    exit 1
+  echo "Error: First line of commit message must be lowercase"
+  exit 1
 fi
 
-# Check if first line is ≤60 characters
 if [ $(echo "$MSG" | head -1 | wc -c) -gt 60 ]; then
-    echo "Error: First line of commit message must be ≤60 characters"
-    exit 1
+  echo "Error: First line of commit message must be ≤60 characters"
+  exit 1
 fi
 
 exit 0

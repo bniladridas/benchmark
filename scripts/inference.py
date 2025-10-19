@@ -1,6 +1,5 @@
 import argparse
 
-import torch
 import torchaudio
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 

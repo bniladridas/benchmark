@@ -1,4 +1,5 @@
 import os
+
 import numpy as np
 from torch.utils.data import Dataset
 from transformers import Wav2Vec2FeatureExtractor, WhisperProcessor
@@ -72,7 +73,8 @@ class LiveSpeechDataset(Dataset):
         try:
             import sounddevice as sd  # Lazy import to avoid PortAudio at import time
         except Exception as exc:
-            raise OSError("sounddevice/PortAudio not available for recording") from exc
+            error_message = "sounddevice not available for recording"
+            raise OSError(error_message) from exc
 
         audio = sd.rec(
             int(self.record_seconds * self.sample_rate),
