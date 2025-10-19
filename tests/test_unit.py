@@ -52,14 +52,14 @@ class TestHarpertoken(unittest.TestCase):
     def test_evaluate_function(self):
         """Test compute_metrics function"""
         from harpertoken.evaluate import compute_metrics
-        import torch
         
-        # Mock predictions and labels
-        predictions = torch.tensor([0, 1, 2, 1])
-        labels = torch.tensor([0, 1, 1, 1])
+        # Mock predictions and labels as lists of strings
+        predictions = ["hello", "world"]
+        labels = ["hello", "world"]
         
         metrics = compute_metrics(predictions, labels)
         self.assertIn('accuracy', metrics)
+        self.assertIn('wer', metrics)
         self.assertIsInstance(metrics['accuracy'], float)
 
 if __name__ == '__main__':
