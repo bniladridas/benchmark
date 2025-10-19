@@ -92,6 +92,21 @@ Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
 
 Docker image is built and pushed to GitHub Container Registry.
 
+### OS matrix and Docker
+
+- CI runs on an OS matrix: `ubuntu-latest`, `windows-latest`, `macos-latest`.
+- Docker build and push occur only on `ubuntu-latest` (Linux runners support Docker).
+- On Windows/macOS jobs, unit tests run without Docker.
+
+Local notes by OS:
+- Linux (recommended for Docker):
+  - Build: `docker build -t benchmark .`
+  - Run: `docker run --rm benchmark`
+- macOS:
+  - Ensure Docker Desktop is running to use Docker; otherwise run Python tests via venv.
+- Windows:
+  - Use WSL2 + Docker Desktop for Docker workflows, or run Python tests via venv.
+
 Note: Validate workflow YAML locally before pushing:
 
 ```bash
