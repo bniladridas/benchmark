@@ -64,6 +64,8 @@ chmod +x .git/hooks/pre-push
 
 This will run `ruff check .` before each push and abort if there are issues.
 
+Note: The pre-push hook is a script in the repo that users need to install locally to .git/hooks/pre-push for it to run before pushes. Since it's not installed in the repo's .git/hooks (as hooks are local), it didn't run during our push. CI will still catch issues, but for local enforcement, developers should run the above commands to enable it.
+
 ### CI/CD
 
 Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
