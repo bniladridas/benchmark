@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
+import warnings
 from transformers import Wav2Vec2Model, WhisperForConditionalGeneration
+
+# Suppress model weight warnings
+warnings.filterwarnings("ignore", message=".*Some weights.*were not initialized.*", category=UserWarning)
 
 class SpeechModel(nn.Module):
     def __init__(self, model_type='whisper'):
