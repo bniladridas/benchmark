@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "harpertoken"
-version = "0.1.0"
+version = "1.5.3"
 description = "Speech model benchmark"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -23,7 +23,7 @@ dependencies = [
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "1.5.3"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "C90", "I", "N", "UP", "YTT", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
