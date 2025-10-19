@@ -59,10 +59,18 @@ train_model(model_type='whisper')  # or 'wav2vec2'
 
 ## testing the model
 
-```python
-# run transcription test (whisper or wav2vec2)
-python tests/test_transcription.py --model_type whisper  # or --model_type wav2vec2
+```bash
+# activate virtual environment
+source venv/bin/activate
 
+# run all tests
+./run_tests.py
+
+# or run transcription test directly (whisper or wav2vec2)
+python tests/test_transcription.py --model_type whisper  # or --model_type wav2vec2
+```
+
+```python
 # or programmatically
 from tests.test_transcription import test_transcription
 test_transcription()  # uses default whisper
