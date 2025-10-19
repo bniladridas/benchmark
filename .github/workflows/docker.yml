@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      OWNER: ${{ github.repository_owner }}
+      REPO: ${{ github.event.repository.name }}
 
     steps:
       - uses: actions/checkout@v3
@@ -37,8 +40,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images:
-            - ghcr.io/${{ github.repository_owner }}/
-              ${{ github.event.repository.name }}
+            - ghcr.io/${{ env.OWNER }}/${{ env.REPO }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
