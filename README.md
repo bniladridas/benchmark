@@ -104,6 +104,17 @@ docker run benchmark
 
 - [harpertokenASR on Hugging Face](https://huggingface.co/harpertoken/harpertokenASR)
 
+## versioning
+
+this project uses [semantic versioning](https://semver.org/) with automated releases via [semantic-release](https://github.com/semantic-release/semantic-release).
+
+versions are automatically bumped and tagged based on conventional commit messages:
+- `feat:` commits trigger minor version bumps
+- `fix:` commits trigger patch version bumps
+- `BREAKING CHANGE` in commits trigger major version bumps
+
+releases are created on pushes to the main branch. check the [releases page](https://github.com/bniladridas/benchmark/releases) for version history.
+
 ## ci workflow
 
 the ci workflow runs tests on every push and pull request to the main branch using github actions.
