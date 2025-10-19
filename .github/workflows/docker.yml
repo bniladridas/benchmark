@@ -19,17 +19,17 @@ jobs:
       ISSUE_TOKEN: ${{ secrets.ISSUE_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: log in to ghcr with PAT (if provided)
         if: github.event_name == 'push' && env.ISSUE_TOKEN != ''
-        uses: docker/login-action@v3
+        uses: docker/login-action@v5
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ env.ISSUE_TOKEN }}
       - name: log in to ghcr with GITHUB_TOKEN (fallback)
         if: github.event_name == 'push' && env.ISSUE_TOKEN == ''
-        uses: docker/login-action@v3
+        uses: docker/login-action@v5
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
