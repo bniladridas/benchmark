@@ -39,8 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images:
-            - ghcr.io/${{ env.OWNER }}/${{ env.REPO }}
+          images: ghcr.io/${{ env.OWNER }}/${{ env.REPO }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
