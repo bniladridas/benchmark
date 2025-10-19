@@ -8,7 +8,9 @@
 
 ## usage
 
-Whisper (supports `generate`):
+### whisper model (ci-tested syntax)
+
+the following syntax is validated in our ci pipeline:
 
 ```python
 from harpertoken.model import SpeechModel
@@ -16,28 +18,36 @@ from harpertoken.dataset import LiveSpeechDataset
 from transformers import WhisperProcessor
 import torch
 
-model = SpeechModel(model_type='whisper')
-processor = WhisperProcessor.from_pretrained('openai/whisper-small')  # use 'openai/whisper-tiny' for speed
+# use tiny model for faster testing (or whisper-small for better quality)
+model = SpeechModel(model_type="whisper")
+processor = WhisperProcessor.from_pretrained("openai/whisper-tiny")
 
 dataset = LiveSpeechDataset()
 audio = dataset.record_audio()
 
+# process audio
 inputs = processor(audio, sampling_rate=16000, return_tensors="pt")
-attention_mask = torch.ones(inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long)
+attention_mask = torch.ones(
+    inputs.input_features.shape[0],
+    inputs.input_features.shape[1],
+    dtype=torch.long,
+)
 
+# generate transcription
 with torch.no_grad():
     generated_ids = model.generate(
         input_features=inputs.input_features,
         attention_mask=attention_mask,
-        language='en',
-        task='transcribe',
+        language="en",
+        task="transcribe",
     )
 
+# decode transcription
 transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-print(f'transcription: {transcription}')
+print(f"transcription: {transcription}")
 ```
 
-Wav2Vec2 (no `generate`; use forward to get features/logits):
+### wav2vec2 model (ci-tested syntax)
 
 ```python
 from harpertoken.model import SpeechModel
@@ -45,8 +55,8 @@ from harpertoken.dataset import LiveSpeechDataset
 from transformers import Wav2Vec2FeatureExtractor
 import torch
 
-model = SpeechModel(model_type='wav2vec2')
-processor = Wav2Vec2FeatureExtractor.from_pretrained('facebook/wav2vec2-base-960h')
+model = SpeechModel(model_type="wav2vec2")
+processor = Wav2Vec2FeatureExtractor.from_pretrained("facebook/wav2vec2-base-960h")
 
 dataset = LiveSpeechDataset()
 audio = dataset.record_audio()
@@ -59,34 +69,90 @@ with torch.no_grad():
 print(features.shape)
 ```
 
+### direct hugging face usage (alternative)
+
+for direct model access without the speechmodel wrapper:
+
+```python
+from transformers import WhisperForConditionalGeneration, WhisperProcessor
+from harpertoken.dataset import LiveSpeechDataset
+import torch
+
+# direct model loading (used in some tests)
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small")
+processor = WhisperProcessor.from_pretrained("openai/whisper-small")
+
+dataset = LiveSpeechDataset()
+audio = dataset.record_audio()
+
+inputs = processor(audio, sampling_rate=16000, return_tensors="pt")
+if not hasattr(inputs, "attention_mask") or inputs.attention_mask is None:
+    inputs.attention_mask = torch.ones(
+        inputs.input_features.shape[0],
+        inputs.input_features.shape[1],
+        dtype=torch.long,
+    )
+
+with torch.no_grad():
+    generated_ids = model.generate(
+        input_features=inputs.input_features,
+        attention_mask=inputs.attention_mask,
+        language="en",
+        task="transcribe",
+    )
+
+transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+print(f"transcription: {transcription}")
+```
+
 ## training
 
 ```python
 from harpertoken.train import train_model
 
 # train the model (whisper or wav2vec2)
-train_model(model_type='whisper')  # or 'wav2vec2'
+train_model(model_type="whisper")  # or "wav2vec2"
 ```
 
-## testing the model
+## testing
 
-see [docs/testing.md](docs/TESTING.md) for detailed testing instructions.
+see [docs/TESTING.md](docs/TESTING.md) for detailed testing instructions.
+
+### quick test (ci-validated syntax)
 
 ```bash
 # activate virtual environment
 source venv/bin/activate
 
-# run all tests
-./run_tests.py
+# run all tests (same as ci)
+python run_tests.py
 
-# or run transcription test directly (whisper or wav2vec2)
-python tests/test_transcription.py --model_type whisper  # or --model_type wav2vec2
+# run individual tests
+python -m unittest tests.test_unit
+python tests/test_transcription.py --model_type whisper
 ```
 
+### programmatic testing
+
 ```python
-# or programmatically
+# unit tests (runs in ci)
+from harpertoken.model import SpeechModel
+from harpertoken.dataset import LiveSpeechDataset
+from harpertoken.evaluate import compute_metrics
+
+# test model creation
+model = SpeechModel(model_type="whisper")
+dataset = LiveSpeechDataset()
+
+# test evaluation
+predictions = ["hello", "world"]
+labels = ["hello", "world"]
+wer, cer = compute_metrics(predictions, labels)
+print(f"wer: {wer}, cer: {cer}")
+
+# live transcription test
 from tests.test_transcription import test_transcription
-test_transcription()  # uses default whisper
+test_transcription(model_type="whisper")
 ```
 
 ## docker
