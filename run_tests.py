@@ -10,7 +10,7 @@ import sys
 
 def run_command(cmd, timeout=None):
     """Run command with venv activated"""
-    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python")
+    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python3")
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.dirname(__file__)
     full_cmd = [venv_python] + cmd
@@ -39,7 +39,7 @@ def run_unit_tests():
 def run_transcription_test():
     """Run transcription test (requires audio input)"""
     print("Running transcription test (this will attempt to record audio)...")
-    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python")
+    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python3")
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.dirname(__file__)
     result = subprocess.run(
