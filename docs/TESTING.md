@@ -13,8 +13,13 @@ ls -l
 # activate virtual environment
 source venv/bin/activate
 
-# Run all tests (unit tests only in CI)
+# Run all tests
+# Note: In CI, transcription is skipped automatically (CI=="true").
+# Locally, you'll be prompted; press 'y' to run the transcription test.
 python run_tests.py
+
+# Force run transcription via environment (non-interactive)
+CI=false python run_tests.py
 
 # Manual transcription test (requires audio input)
 python tests/test_transcription.py --model_type whisper
