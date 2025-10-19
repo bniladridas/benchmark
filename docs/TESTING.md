@@ -4,7 +4,7 @@
 
 ```bash
 ls -l
-# Expected: main.py, train.py, test_transcription.py, dataset.py, model.py, requirements.txt
+# Expected: main.py, src/, tests/, scripts/, docs/, requirements.txt, README.md, LICENSE, .gitignore
 ```
 
 ### Core Tests
@@ -15,16 +15,16 @@ python main.py --model_type whisper
 python main.py --model_type wav2vec2
 
 # train.py – verify training start
-python -c "from train import train_model; train_model('whisper')"
+python -c "from src.train import train_model; train_model('whisper')"
 
 # test_transcription.py – verify transcription
-python test_transcription.py --model_type whisper
+python tests/test_transcription.py --model_type whisper
 
 # dataset.py – verify audio recording
-python -c "from dataset import LiveSpeechDataset; LiveSpeechDataset().record_audio()"
+python -c "from src.dataset import LiveSpeechDataset; LiveSpeechDataset().record_audio()"
 
 # model.py – verify model load
-python -c "from model import SpeechModel; SpeechModel('whisper')"
+python -c "from src.model import SpeechModel; SpeechModel('whisper')"
 ```
 
 ### Integration Tests
@@ -34,7 +34,7 @@ python -c "from model import SpeechModel; SpeechModel('whisper')"
 python main.py --model_type whisper
 
 # Full transcription
-python test_transcription.py --model_type whisper
+python tests/test_transcription.py --model_type whisper
 ```
 
 ### Environment Checks
@@ -47,5 +47,5 @@ pip install -r requirements.txt
 flake8 .
 
 # Import validation
-python -c "from dataset import LiveSpeechDataset; from train import train_model; from test_transcription import test_transcription; print('Imports OK')"
+python -c "from src.dataset import LiveSpeechDataset; from src.train import train_model; from tests.test_transcription import test_transcription; print('Imports OK')"
 ```

@@ -27,8 +27,8 @@ Models saved to:
 ### Transcription
 
 ```bash
-python test_transcription.py --model whisper
-python test_transcription.py --model wav2vec2
+python tests/test_transcription.py --model whisper
+python tests/test_transcription.py --model wav2vec2
 ```
 
 ## Files
