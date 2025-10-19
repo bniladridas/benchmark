@@ -42,22 +42,29 @@ python tests/test_transcription.py --model wav2vec2
 ## Usage
 
 ```python
-from harpertoken.models.model import CMAESAgent
+from harpertoken.model import SpeechModel
 
-# Load pretrained model
-agent = CMAESAgent.from_pretrained("harpertoken/harpertoken-cartpole")
+# Load a speech model
+model = SpeechModel(model_type='whisper')
 
-# Use for inference
-action = agent.get_action(state)
-# or evaluate performance
-mean_reward, std_reward = agent.evaluate(num_episodes=10)
+# For training
+from harpertoken.train import train_model
+train_model(model_type='whisper')
+
+# For transcription
+from tests.test_transcription import test_transcription
+test_transcription()
 ```
 
 ## Testing the Model
 
 ```python
-from harpertoken.evaluation.test_model import test_model
-test_model(agent, num_episodes=5)
+# Run transcription test
+python tests/test_transcription.py --model_type whisper
+
+# Or programmatically
+from tests.test_transcription import test_transcription
+test_transcription()
 ```
 
 ## Commit Format
