@@ -110,6 +110,37 @@ git rm -r --cached models/
 git commit -m "Update .gitignore"
 ```
 
+## Conventional Commits
+
+This project uses conventional commit standards to maintain a clean and readable git history.
+
+### Setup
+
+To enable commit message validation:
+
+```bash
+cp scripts/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+### Commit Message Format
+
+Commit messages must follow the format: `type: description`
+
+- **Types**: feat, fix, docs, style, refactor, test, chore
+- First line: lowercase, ≤60 characters
+- Example: `feat: add new transcription feature`
+
+### History Cleanup
+
+To rewrite existing commit messages (lowercase, truncate, remove #1 mentions):
+
+```bash
+bash scripts/rewrite_msg.sh
+```
+
+The git history has been cleaned using this script.
+
 ## Your Data, Your Models
 No pre-existing dataset needed. Your live audio recordings fuel the fine-tuning process, making every model uniquely yours.
 
