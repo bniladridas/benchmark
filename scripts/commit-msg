@@ -15,9 +15,9 @@ if echo "$MSG" | head -1 | grep -q '[A-Z]'; then
     exit 1
 fi
 
-# Check if first line is ≤60 characters
-if [ $(echo "$MSG" | head -1 | wc -c) -gt 60 ]; then
-    echo "Error: First line of commit message must be ≤60 characters"
+# Check if first line is ≤40 characters
+if [ $(echo "$MSG" | head -1 | wc -c) -gt 40 ]; then
+    echo "Error: First line of commit message must be ≤40 characters"
     exit 1
 fi
 
