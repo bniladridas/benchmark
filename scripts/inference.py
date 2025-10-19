@@ -35,10 +35,14 @@ if __name__ == "__main__":
     )
     parser.add_argument("--model_path", required=True, help="Path to fine-tuned model")
     parser.add_argument(
-        "--processor_path", required=True, help="Path to fine-tuned processor",
+        "--processor_path",
+        required=True,
+        help="Path to fine-tuned processor",
     )
     parser.add_argument(
-        "--audio_path", required=True, help="Path to audio file to transcribe",
+        "--audio_path",
+        required=True,
+        help="Path to audio file to transcribe",
     )
 
     args = parser.parse_args()

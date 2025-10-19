@@ -16,7 +16,8 @@ def run_command(cmd, timeout=None):
     full_cmd = [venv_python] + cmd
     result = subprocess.run(
         full_cmd,
-        check=False, cwd=os.path.dirname(__file__),
+        check=False,
+        cwd=os.path.dirname(__file__),
         capture_output=True,
         text=True,
         env=env,
@@ -43,7 +44,8 @@ def run_transcription_test():
     env["PYTHONPATH"] = os.path.dirname(__file__)
     result = subprocess.run(
         [venv_python, "tests/test_transcription.py", "--model_type", "whisper"],
-        check=False, cwd=os.path.dirname(__file__),
+        check=False,
+        cwd=os.path.dirname(__file__),
         capture_output=True,
         text=True,
         env=env,

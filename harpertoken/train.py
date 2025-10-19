@@ -102,7 +102,9 @@ def train_model(model_type="whisper", num_epochs=10, initial_lr=1e-4):
 
         print(f"Uploading model to Hugging Face Hub: {repo_id}")
         api.upload_folder(
-            folder_path=model_save_path, repo_id=repo_id, repo_type="model",
+            folder_path=model_save_path,
+            repo_id=repo_id,
+            repo_type="model",
         )
 
         print("Upload completed successfully!")

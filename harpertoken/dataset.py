@@ -38,12 +38,17 @@ class LiveSpeechDataset(Dataset):
 
         if self.model_type == "whisper":
             inputs = self.processor(
-                audio, sampling_rate=self.sample_rate, return_tensors="pt",
+                audio,
+                sampling_rate=self.sample_rate,
+                return_tensors="pt",
             )
             return {"input_features": inputs.input_features.squeeze(0)}
         if self.model_type == "wav2vec2":
             inputs = self.processor(
-                audio, sampling_rate=self.sample_rate, return_tensors="pt", padding=True,
+                audio,
+                sampling_rate=self.sample_rate,
+                return_tensors="pt",
+                padding=True,
             )
             # Ensure proper input dimensions for Wav2Vec2
             return {"input_values": inputs.input_values.squeeze(0).unsqueeze(0)}
