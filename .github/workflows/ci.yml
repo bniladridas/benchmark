@@ -31,6 +31,10 @@ jobs:
       run: |
         source venv/bin/activate
         ruff check .
+    - name: run ruff format check
+      run: |
+        source venv/bin/activate
+        ruff format --check .
     - name: run tests
       run: |
         source venv/bin/activate
