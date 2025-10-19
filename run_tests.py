@@ -11,7 +11,7 @@ import sys
 def run_command(cmd, timeout=None):
     """Run command with venv activated"""
     venv_bin = os.path.join(os.path.dirname(__file__), "venv", "bin")
-    venv_python = os.path.join(venv_bin, "python")
+    venv_python = os.path.join(venv_bin, "python3")
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.dirname(__file__)
     full_cmd = [venv_python] + cmd
