@@ -53,6 +53,17 @@ ruff format --check .
 python -c "import harpertoken.dataset; import harpertoken.model; import harpertoken.train; print('Imports OK')"
 ```
 
+### Pre-Push Hook
+
+To prevent pushing code with linting issues, set up the pre-push hook:
+
+```bash
+cp scripts/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+This will run `ruff check .` before each push and abort if there are issues.
+
 ### CI/CD
 
 Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.

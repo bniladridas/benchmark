@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Pre-push hook to run ruff check
+
+echo "Running ruff check..."
+
+if ! ruff check .; then
+    echo "Ruff check failed. Please fix the issues before pushing."
+    exit 1
+fi
+
+echo "Ruff check passed."
