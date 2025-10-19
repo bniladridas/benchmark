@@ -1,6 +1,7 @@
+---
 name: release
 
-on:
+"on":
   push:
     branches:
       - main
@@ -15,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: semantic release
-      uses: cycjimmy/semantic-release-action@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: semantic release
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
