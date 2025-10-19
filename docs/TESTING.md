@@ -4,7 +4,7 @@
 
 ```bash
 ls -l
-# Expected: main.py, harpertoken/, tests/, scripts/, docs/, requirements.txt, README.md, LICENSE, .gitignore
+# Expected: main.py, harpertoken/, tests/, scripts/, docs/, requirements.txt, README.md, LICENSE, .gitignore, Dockerfile, .github/
 ```
 
 ### Core Tests
@@ -13,21 +13,17 @@ ls -l
 # activate virtual environment
 source venv/bin/activate
 
-# main.py – verify model type
-python main.py --model_type whisper
-python main.py --model_type wav2vec2
+# Run all tests (unit tests only in CI)
+python run_tests.py
 
-# train.py – verify training start
-python -c "from harpertoken.train import train_model; train_model('whisper')"
-
-# test_transcription.py – verify transcription
+# Manual transcription test (requires audio input)
 python tests/test_transcription.py --model_type whisper
 
-# dataset.py – verify audio recording
-python -c "from harpertoken.dataset import LiveSpeechDataset; LiveSpeechDataset().record_audio()"
+# Verify model creation
+python -c "from harpertoken.model import SpeechModel; SpeechModel('whisper'); print('Model OK')"
 
-# model.py – verify model load
-python -c "from harpertoken.model import SpeechModel; SpeechModel('whisper')"
+# Verify dataset
+python -c "from harpertoken.dataset import LiveSpeechDataset; ds = LiveSpeechDataset(); print('Dataset OK')"
 ```
 
 ### Integration Tests
@@ -36,10 +32,7 @@ python -c "from harpertoken.model import SpeechModel; SpeechModel('whisper')"
 # activate virtual environment
 source venv/bin/activate
 
-# Full training
-python main.py --model_type whisper
-
-# Full transcription
+# Full transcription test
 python tests/test_transcription.py --model_type whisper
 ```
 
@@ -49,12 +42,29 @@ python tests/test_transcription.py --model_type whisper
 # activate virtual environment
 source venv/bin/activate
 
-# Dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# Lint check
-flake8 .
+# Lint and format check
+ruff check .
+ruff format --check .
 
 # Import validation
-python -c "from harpertoken.dataset import LiveSpeechDataset; from harpertoken.train import train_model; from tests.test_transcription import test_transcription; print('Imports OK')"
+python -c "import harpertoken.dataset; import harpertoken.model; import harpertoken.train; print('Imports OK')"
+```
+
+### CI/CD
+
+Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
+
+Docker image is built and pushed to GitHub Container Registry.
+
+### Docker Testing
+
+```bash
+# Build image
+docker build -t benchmark .
+
+# Run container
+docker run benchmark
 ```
