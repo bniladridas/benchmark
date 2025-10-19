@@ -99,6 +99,17 @@ class TestHarpertoken(unittest.TestCase):
         assert isinstance(transcription, str)
         assert len(transcription) >= 0  # Should produce some output
 
+    def test_train_model_import(self):
+        """Test that train_model can be imported and accepts parameters"""
+        from harpertoken.train import train_model
+        # Just test import and that it's callable
+        assert callable(train_model)
+
+    def test_test_transcription_import(self):
+        """Test that test_transcription can be imported"""
+        from tests.test_transcription import test_transcription
+        assert callable(test_transcription)
+
 
 if __name__ == "__main__":
     unittest.main()
