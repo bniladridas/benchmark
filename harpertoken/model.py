@@ -47,4 +47,5 @@ class SpeechModel(nn.Module):
         """
         if self.model_type == "whisper":
             return self.model.generate(**kwargs)
-        raise NotImplementedError("generate is only supported for 'whisper' in SpeechModel")
+        error_message = "generate is only supported for 'whisper' in SpeechModel"
+        raise NotImplementedError(error_message)

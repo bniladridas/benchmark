@@ -6,27 +6,28 @@ Script to run all tests for the harpertoken project.
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 
 def run_command(cmd, timeout=None):
     """Run command with venv activated"""
     # Resolve project directory robustly even if __file__ is empty
-    project_dir = os.path.abspath(os.path.dirname(__file__) or os.getcwd())
+    project_dir = Path(__file__).resolve().parent if __file__ else Path.cwd()
 
     # Prefer the repository venv python, but fall back safely
-    venv_bin = os.path.join(project_dir, "venv", "bin")
-    candidate_python = os.path.join(venv_bin, "python3")
-    if not os.path.exists(candidate_python):
+    venv_bin = project_dir / "venv" / "bin"
+    candidate_python = venv_bin / "python3"
+    if not candidate_python.exists():
         candidate_python = sys.executable or "python3"
 
     env = os.environ.copy()
-    env["PYTHONPATH"] = project_dir
+    env["PYTHONPATH"] = str(project_dir)
 
-    full_cmd = [candidate_python] + cmd
+    full_cmd = [str(candidate_python)] + cmd
     result = subprocess.run(
         full_cmd,
         check=False,
-        cwd=project_dir,
+        cwd=str(project_dir),
         capture_output=True,
         text=True,
         env=env,
