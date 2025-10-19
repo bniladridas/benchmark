@@ -7,19 +7,19 @@ import subprocess
 import sys
 import os
 
-def run_command(cmd):
+def run_command(cmd, timeout=None):
     """Run command with venv activated"""
     venv_python = os.path.join(os.path.dirname(__file__), 'venv', 'bin', 'python')
     env = os.environ.copy()
     env['PYTHONPATH'] = os.path.dirname(__file__)
     full_cmd = [venv_python] + cmd
-    result = subprocess.run(full_cmd, cwd=os.path.dirname(__file__), capture_output=True, text=True, env=env)
+    result = subprocess.run(full_cmd, cwd=os.path.dirname(__file__), capture_output=True, text=True, env=env, timeout=timeout)
     return result
 
 def run_unit_tests():
     """Run unit tests"""
     print("Running unit tests...")
-    result = run_command(['-m', 'unittest', 'tests.test_unit'])
+    result = run_command(['-m', 'unittest', 'tests.test_unit'], timeout=60)
     print(result.stdout)
     if result.stderr:
         print("Errors:", result.stderr)
