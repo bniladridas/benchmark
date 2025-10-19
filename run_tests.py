@@ -29,7 +29,7 @@ def run_command(cmd, timeout=None):
 def run_unit_tests():
     """Run unit tests"""
     print("Running unit tests...")
-    result = run_command(["python", "-m", "unittest", "tests.test_unit"], timeout=60)
+    result = run_command(["-m", "unittest", "tests.test_unit"], timeout=60)
     print(result.stdout)
     if result.stderr:
         print("Errors:", result.stderr)
