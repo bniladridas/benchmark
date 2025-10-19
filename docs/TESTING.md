@@ -56,6 +56,14 @@ ruff format --check .
 
 # Import validation
 python -c "import harpertoken.dataset; import harpertoken.model; import harpertoken.train; print('Imports OK')"
+
+# Version consistency check
+python -c "
+import toml
+with open('pyproject.toml') as f:
+    version = toml.load(f)['project']['version']
+print(f'Current version: {version}')
+"
 ```
 
 ### Pre-Push Hook
@@ -83,6 +91,7 @@ chmod +x .git/hooks/commit-msg
 ```
 
 Notes:
+
 - The hook prefers `venv/bin/ruff` and falls back to `ruff` on PATH.
 - Hooks are local to your clone; share the script via `scripts/` and have each collaborator install it.
 
@@ -92,6 +101,16 @@ Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
 
 Docker image is built and pushed to GitHub Container Registry.
 
+**Semantic Release:**
+
+- Automatic versioning and releases based on conventional commits
+- Version in `pyproject.toml` is automatically updated on release
+- Use conventional commit messages:
+  - `feat:` for new features (minor version bump)
+  - `fix:` for bug fixes (patch version bump)
+  - `BREAKING CHANGE:` for breaking changes (major version bump)
+- Releases are created automatically on push to main branch
+
 ### OS matrix and Docker
 
 - CI runs on an OS matrix: `ubuntu-latest`, `windows-latest`, `macos-latest`.
@@ -99,6 +118,7 @@ Docker image is built and pushed to GitHub Container Registry.
 - On Windows/macOS jobs, unit tests run without Docker.
 
 Local notes by OS:
+
 - Linux (recommended for Docker):
   - Build: `docker build -t benchmark .`
   - Run: `docker run --rm benchmark`
@@ -113,6 +133,7 @@ Note: Validate workflow YAML locally before pushing:
 pip install yamllint
 yamllint .github/workflows/docker.yml
 ```
+
 Resolve any reported lint errors (indentation, booleans, keys) before committing.
 
 For a quick parse check using PyYAML:
@@ -139,3 +160,25 @@ docker build -t benchmark .
 # Run container
 docker run benchmark
 ```
+
+### Release Testing
+
+```bash
+# Test semantic-release configuration locally (requires Node.js)
+npm install -g semantic-release @semantic-release/exec @semantic-release/git
+npx semantic-release --dry-run
+
+# Test version update script
+python scripts/update_version.py 1.0.0-test
+
+# Verify version was updated (then revert)
+git checkout -- pyproject.toml
+```
+
+### Troubleshooting
+
+**Ruff target-version error:**
+If you see `unknown variant '1.5.3', expected one of 'py37', 'py38'...`, check that `target-version` in `pyproject.toml` is set to a Python version (e.g., `"py38"`) not a package version.
+
+**Version sync issues:**
+If `pyproject.toml` version doesn't match the latest release tag, the semantic-release process may have failed. Check GitHub Actions logs and ensure `@semantic-release/git` plugin is configured.
