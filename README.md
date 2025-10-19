@@ -69,9 +69,15 @@ Captures ~5 seconds of audio by default.
 
 ## File Overview
 
-* `dataset.py` – audio recording and preprocessing
-* `train.py` – training logic
-* `test_transcription.py` – real-time transcription script
+* `src/dataset.py` – audio recording and preprocessing
+* `src/train.py` – training logic
+* `src/model.py` – model definitions
+* `src/evaluate.py` – evaluation metrics
+* `src/preprocessing.py` – audio preprocessing utilities
+* `tests/test_transcription.py` – real-time transcription script
+* `scripts/inference.py` – audio file transcription
+* `scripts/commit-msg` – commit message validation hook
+* `scripts/rewrite_msg.sh` – history rewrite script
 * `main.py` – main fine-tuning entry point
 * `requirements.txt` – dependency list
 
