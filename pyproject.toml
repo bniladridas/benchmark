@@ -27,7 +27,7 @@ target-version = "py38"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "C90", "I", "N", "UP", "YTT", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
-ignore = ["E501", "S101", "S104"]
+ignore = ["E501", "S101", "S104", "T201", "RET504", "PTH118", "PTH120", "PTH103", "DTZ005", "BLE001", "S603", "RUF005", "PLR0915", "PLR2004", "N812", "UP008", "RET503", "PT028", "FBT002", "PT009", "PLC0415", "ERA001"]
 
 [tool.ruff.format]
 quote-style = "double"

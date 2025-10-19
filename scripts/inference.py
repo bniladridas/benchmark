@@ -1,7 +1,8 @@
+import argparse
+
 import torch
 import torchaudio
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
-import argparse
 
 
 def load_fine_tuned_model(model_path, processor_path):
@@ -30,14 +31,14 @@ def transcribe_audio(model, processor, audio_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Speech Recognition AI Fine Tune Inference"
+        description="Speech Recognition AI Fine Tune Inference",
     )
     parser.add_argument("--model_path", required=True, help="Path to fine-tuned model")
     parser.add_argument(
-        "--processor_path", required=True, help="Path to fine-tuned processor"
+        "--processor_path", required=True, help="Path to fine-tuned processor",
     )
     parser.add_argument(
-        "--audio_path", required=True, help="Path to audio file to transcribe"
+        "--audio_path", required=True, help="Path to audio file to transcribe",
     )
 
     args = parser.parse_args()

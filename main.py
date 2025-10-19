@@ -1,4 +1,5 @@
 import argparse
+
 from harpertoken.train import train_model
 
 if __name__ == "__main__":

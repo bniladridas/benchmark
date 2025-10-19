@@ -1,12 +1,14 @@
+import os
+import time
+from datetime import datetime
+
 import torch
-from torch.utils.data import DataLoader
+from huggingface_hub import HfApi, login
 from torch.optim import AdamW, lr_scheduler
+from torch.utils.data import DataLoader
+
 from harpertoken.dataset import LiveSpeechDataset
 from harpertoken.model import SpeechModel
-import os
-from datetime import datetime
-from huggingface_hub import HfApi, login
-import time
 
 
 def train_model(model_type="whisper", num_epochs=10, initial_lr=1e-4):
@@ -100,9 +102,9 @@ def train_model(model_type="whisper", num_epochs=10, initial_lr=1e-4):
 
         print(f"Uploading model to Hugging Face Hub: {repo_id}")
         api.upload_folder(
-            folder_path=model_save_path, repo_id=repo_id, repo_type="model"
+            folder_path=model_save_path, repo_id=repo_id, repo_type="model",
         )
 
         print("Upload completed successfully!")
     except Exception as e:
-        print(f"Error uploading to Hugging Face Hub: {str(e)}")
+        print(f"Error uploading to Hugging Face Hub: {e!s}")

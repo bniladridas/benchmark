@@ -3,9 +3,9 @@
 Script to run all tests for the harpertoken project.
 """
 
+import os
 import subprocess
 import sys
-import os
 
 
 def run_command(cmd, timeout=None):
@@ -16,7 +16,7 @@ def run_command(cmd, timeout=None):
     full_cmd = [venv_python] + cmd
     result = subprocess.run(
         full_cmd,
-        cwd=os.path.dirname(__file__),
+        check=False, cwd=os.path.dirname(__file__),
         capture_output=True,
         text=True,
         env=env,
@@ -43,7 +43,7 @@ def run_transcription_test():
     env["PYTHONPATH"] = os.path.dirname(__file__)
     result = subprocess.run(
         [venv_python, "tests/test_transcription.py", "--model_type", "whisper"],
-        cwd=os.path.dirname(__file__),
+        check=False, cwd=os.path.dirname(__file__),
         capture_output=True,
         text=True,
         env=env,
@@ -69,7 +69,7 @@ def main():
         try:
             run_e2e = (
                 input(
-                    "Run transcription test? (requires audio input, may hang) [y/N]: "
+                    "Run transcription test? (requires audio input, may hang) [y/N]: ",
                 )
                 .lower()
                 .strip()
@@ -86,9 +86,8 @@ def main():
     if unit_success and trans_success:
         print("All tests passed!")
         return 0
-    else:
-        print("Some tests failed.")
-        return 1
+    print("Some tests failed.")
+    return 1
 
 
 if __name__ == "__main__":

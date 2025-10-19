@@ -1,6 +1,6 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
 import warnings
 
 # Add parent directory to path for imports
@@ -15,10 +15,10 @@ class TestHarpertoken(unittest.TestCase):
         """Test that all main modules can be imported"""
         try:
             from harpertoken.dataset import LiveSpeechDataset  # noqa: F401
-            from harpertoken.model import SpeechModel  # noqa: F401
-            from harpertoken.train import train_model  # noqa: F401
             from harpertoken.evaluate import compute_metrics  # noqa: F401
+            from harpertoken.model import SpeechModel  # noqa: F401
             from harpertoken.preprocessing import AudioPreprocessor  # noqa: F401
+            from harpertoken.train import train_model  # noqa: F401
         except ImportError as e:
             self.fail(f"Failed to import modules: {e}")
 
@@ -62,10 +62,10 @@ class TestHarpertoken(unittest.TestCase):
         labels = ["hello", "world"]
 
         wer, cer = compute_metrics(predictions, labels)
-        self.assertIsInstance(wer, float)
-        self.assertIsInstance(cer, float)
-        self.assertEqual(wer, 0.0)  # Perfect match
-        self.assertEqual(cer, 0.0)
+        assert isinstance(wer, float)
+        assert isinstance(cer, float)
+        assert wer == 0.0  # Perfect match
+        assert cer == 0.0
 
 
 if __name__ == "__main__":

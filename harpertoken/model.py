@@ -1,6 +1,7 @@
-import torch.nn as nn
-import warnings
 import logging
+import warnings
+
+from torch import nn
 from transformers import Wav2Vec2Model, WhisperForConditionalGeneration
 
 # Suppress model weight warnings
@@ -11,7 +12,7 @@ logging.getLogger("accelerate").setLevel(logging.ERROR)
 
 class SpeechModel(nn.Module):
     def __init__(self, model_type="whisper"):
-        super(SpeechModel, self).__init__()
+        super().__init__()
         self.model_type = model_type
 
         if model_type == "wav2vec2":
@@ -19,10 +20,11 @@ class SpeechModel(nn.Module):
             self.fc = nn.Linear(768, 32)  # Adjust output size as needed
         elif model_type == "whisper":
             self.model = WhisperForConditionalGeneration.from_pretrained(
-                "openai/whisper-small"
+                "openai/whisper-small",
             )
         else:
-            raise ValueError(f"Unsupported model type: {model_type}")
+            msg = f"Unsupported model type: {model_type}"
+            raise ValueError(msg)
 
     def forward(self, inputs, labels=None):
         if self.model_type == "wav2vec2":
@@ -32,7 +34,7 @@ class SpeechModel(nn.Module):
             outputs = self.model(inputs).last_hidden_state
             outputs = self.fc(outputs)
             return outputs
-        elif self.model_type == "whisper":
+        if self.model_type == "whisper":
             if labels is not None:
                 return self.model(input_features=inputs, labels=labels)
             return self.model(input_features=inputs)

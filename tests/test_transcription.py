@@ -1,18 +1,19 @@
-from harpertoken.dataset import LiveSpeechDataset
-from transformers import WhisperForConditionalGeneration, WhisperProcessor
-import torch
 import argparse
+
+import torch
+from transformers import WhisperForConditionalGeneration, WhisperProcessor
+
+from harpertoken.dataset import LiveSpeechDataset
 
 
 def test_transcription(model_type="whisper", use_pretrained=False):
     # Load model for testing
     if use_pretrained:
         model_name = "harpertoken/harpertokenASR"
+    elif model_type == "whisper":
+        model_name = "openai/whisper-small"
     else:
-        if model_type == "whisper":
-            model_name = "openai/whisper-small"
-        else:
-            model_name = "facebook/wav2vec2-base-960h"
+        model_name = "facebook/wav2vec2-base-960h"
 
     model = WhisperForConditionalGeneration.from_pretrained(model_name)
     processor = WhisperProcessor.from_pretrained(model_name)

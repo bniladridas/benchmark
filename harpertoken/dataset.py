@@ -1,6 +1,6 @@
 import sounddevice as sd
-from transformers import WhisperProcessor, Wav2Vec2FeatureExtractor
 from torch.utils.data import Dataset
+from transformers import Wav2Vec2FeatureExtractor, WhisperProcessor
 
 
 class LiveSpeechDataset(Dataset):
@@ -19,10 +19,11 @@ class LiveSpeechDataset(Dataset):
             self.processor = WhisperProcessor.from_pretrained("openai/whisper-small")
         elif model_type == "wav2vec2":
             self.processor = Wav2Vec2FeatureExtractor.from_pretrained(
-                "facebook/wav2vec2-base-960h"
+                "facebook/wav2vec2-base-960h",
             )
         else:
-            raise ValueError(f"Unsupported model type: {model_type}")
+            msg = f"Unsupported model type: {model_type}"
+            raise ValueError(msg)
 
         self.recordings = []
         # Record initial audio to ensure data exists
@@ -37,15 +38,16 @@ class LiveSpeechDataset(Dataset):
 
         if self.model_type == "whisper":
             inputs = self.processor(
-                audio, sampling_rate=self.sample_rate, return_tensors="pt"
+                audio, sampling_rate=self.sample_rate, return_tensors="pt",
             )
             return {"input_features": inputs.input_features.squeeze(0)}
-        elif self.model_type == "wav2vec2":
+        if self.model_type == "wav2vec2":
             inputs = self.processor(
-                audio, sampling_rate=self.sample_rate, return_tensors="pt", padding=True
+                audio, sampling_rate=self.sample_rate, return_tensors="pt", padding=True,
             )
             # Ensure proper input dimensions for Wav2Vec2
             return {"input_values": inputs.input_values.squeeze(0).unsqueeze(0)}
+        return None
 
     def record_audio(self):
         """Record audio from the default microphone"""

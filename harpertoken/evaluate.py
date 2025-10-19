@@ -14,8 +14,7 @@ def calculate_wer(predictions, references):
         reference = references[i]
         errors += edit_distance(prediction, reference)
     total_words = sum(len(reference.split()) for reference in references)
-    wer = errors / total_words
-    return wer
+    return errors / total_words
 
 
 def calculate_cer(predictions, references):
@@ -28,8 +27,7 @@ def calculate_cer(predictions, references):
         reference = references[i]
         errors += edit_distance(prediction, reference)
         total_chars += len(reference)
-    cer = errors / total_chars
-    return cer
+    return errors / total_chars
 
 
 def edit_distance(prediction, reference):
