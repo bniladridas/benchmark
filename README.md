@@ -85,3 +85,21 @@ python tests/test_transcription.py --model_type whisper  # or --model_type wav2v
 from tests.test_transcription import test_transcription
 test_transcription()  # uses default whisper
 ```
+
+## docker
+
+build the docker image:
+
+```bash
+docker build -t speech-model .
+```
+
+run the container:
+
+```bash
+docker run speech-model
+```
+
+## ci workflow
+
+the ci workflow runs tests on every push and pull request to the main branch using github actions.
