@@ -34,3 +34,7 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+    - name: test docker image
+      run: |
+        docker run --rm ${{ steps.meta.outputs.tags[0] }} python -c "import harpertoken; print('Import successful')"
+        docker run --rm ${{ steps.meta.outputs.tags[0] }} python -m unittest tests.test_unit
