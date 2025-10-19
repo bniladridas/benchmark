@@ -30,7 +30,9 @@ def test_transcription(model_type='whisper', use_pretrained=False):
     # Generate transcription
     with torch.no_grad():
         generated_ids = model.generate(
-            input_features=inputs.input_features
+            input_features=inputs.input_features,
+            language='en',
+            task='transcribe'
         )
     
     # Decode transcription
