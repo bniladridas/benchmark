@@ -82,8 +82,14 @@ class TestHarpertoken(unittest.TestCase):
         dummy_audio = torch.zeros(16000, dtype=torch.float32)
 
         # Process audio
-        inputs = processor(dummy_audio.numpy(), sampling_rate=16000, return_tensors="pt")
-        attention_mask = torch.ones(inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long)
+        inputs = processor(
+            dummy_audio.numpy(), sampling_rate=16000, return_tensors="pt"
+        )
+        attention_mask = torch.ones(
+            inputs.input_features.shape[0],
+            inputs.input_features.shape[1],
+            dtype=torch.long,
+        )
 
         # Generate transcription
         with torch.no_grad():
@@ -92,23 +98,27 @@ class TestHarpertoken(unittest.TestCase):
                 attention_mask=attention_mask,
                 language="en",
                 task="transcribe",
-                max_length=10  # Limit for testing
+                max_length=10,  # Limit for testing
             )
 
         # Decode
-        transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[
+            0
+        ]
         assert isinstance(transcription, str)
         assert len(transcription) >= 0  # Should produce some output
 
     def test_train_model_import(self):
         """Test that train_model can be imported and accepts parameters"""
         from harpertoken.train import train_model
+
         # Just test import and that it's callable
         assert callable(train_model)
 
     def test_test_transcription_import(self):
         """Test that test_transcription can be imported"""
         from tests.test_transcription import test_transcription
+
         assert callable(test_transcription)
 
 
