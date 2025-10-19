@@ -8,9 +8,7 @@
 
 ## usage
 
-### whisper model (ci-tested syntax)
-
-the following syntax is validated in our ci pipeline:
+### whisper model
 
 ```python
 from harpertoken.model import SpeechModel
@@ -47,7 +45,7 @@ transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[
 print(f"transcription: {transcription}")
 ```
 
-### wav2vec2 model (ci-tested syntax)
+### wav2vec2 model
 
 ```python
 from harpertoken.model import SpeechModel
@@ -69,42 +67,6 @@ with torch.no_grad():
 print(features.shape)
 ```
 
-### direct hugging face usage (alternative)
-
-for direct model access without the speechmodel wrapper:
-
-```python
-from transformers import WhisperForConditionalGeneration, WhisperProcessor
-from harpertoken.dataset import LiveSpeechDataset
-import torch
-
-# direct model loading (used in some tests)
-model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small")
-processor = WhisperProcessor.from_pretrained("openai/whisper-small")
-
-dataset = LiveSpeechDataset()
-audio = dataset.record_audio()
-
-inputs = processor(audio, sampling_rate=16000, return_tensors="pt")
-if not hasattr(inputs, "attention_mask") or inputs.attention_mask is None:
-    inputs.attention_mask = torch.ones(
-        inputs.input_features.shape[0],
-        inputs.input_features.shape[1],
-        dtype=torch.long,
-    )
-
-with torch.no_grad():
-    generated_ids = model.generate(
-        input_features=inputs.input_features,
-        attention_mask=inputs.attention_mask,
-        language="en",
-        task="transcribe",
-    )
-
-transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-print(f"transcription: {transcription}")
-```
-
 ## training
 
 ```python
@@ -118,13 +80,13 @@ train_model(model_type="whisper")  # or "wav2vec2"
 
 see [docs/TESTING.md](docs/TESTING.md) for detailed testing instructions.
 
-### quick test (ci-validated syntax)
+### quick test
 
 ```bash
 # activate virtual environment
 source venv/bin/activate
 
-# run all tests (same as ci)
+# run all tests
 python run_tests.py
 
 # run individual tests
@@ -135,7 +97,7 @@ python tests/test_transcription.py --model_type whisper
 ### programmatic testing
 
 ```python
-# unit tests (runs in ci)
+# unit tests
 from harpertoken.model import SpeechModel
 from harpertoken.dataset import LiveSpeechDataset
 from harpertoken.evaluate import compute_metrics
