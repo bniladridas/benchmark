@@ -73,6 +73,19 @@ Note: The pre-push hook runs during the push operation, not during commit. Since
 
 The pre-push hook is a script in the repo that users need to install locally to .git/hooks/pre-push for it to run before pushes. Since it's not installed in the repo's .git/hooks (as hooks are local), it didn't run during our push. CI will still catch issues, but for local enforcement, developers should run the above commands to enable it.
 
+### Commit Message Hook (with Ruff checks)
+
+Install the commit message hook locally to enforce commit message policy and run Ruff on each commit:
+
+```bash
+cp scripts/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+Notes:
+- The hook prefers `venv/bin/ruff` and falls back to `ruff` on PATH.
+- Hooks are local to your clone; share the script via `scripts/` and have each collaborator install it.
+
 ### CI/CD
 
 Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
