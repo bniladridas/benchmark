@@ -27,11 +27,15 @@ def test_transcription(model_type='whisper', use_pretrained=False):
         return_tensors="pt"
     )
     
+    # Create attention mask if not present
+    if not hasattr(inputs, 'attention_mask') or inputs.attention_mask is None:
+        inputs.attention_mask = torch.ones(inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long)
+    
     # Generate transcription
     with torch.no_grad():
         generated_ids = model.generate(
             input_features=inputs.input_features,
-            attention_mask=inputs.attention_mask if hasattr(inputs, 'attention_mask') else None,
+            attention_mask=inputs.attention_mask,
             language='en',
             task='transcribe'
         )
