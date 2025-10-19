@@ -92,6 +92,14 @@ Tests run automatically on GitHub Actions for Python 3.8-3.12 on push/PR.
 
 Docker image is built and pushed to GitHub Container Registry.
 
+Note: If the Docker workflow YAML has syntax issues (e.g., flagged by yamllint), validate locally before pushing:
+
+```bash
+pip install yamllint
+yamllint .github/workflows/docker.yml
+```
+Resolve any reported lint errors (indentation, booleans, keys) before committing.
+
 ### Docker Testing
 
 ```bash
