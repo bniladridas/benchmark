@@ -33,7 +33,7 @@ python tests/test_transcription.py --model wav2vec2
 
 ## Files
 
-* `src/` – Core modules (dataset, model, training, evaluation)
+* `harpertoken/` – Core modules (dataset, model, training, evaluation)
 * `tests/test_transcription.py` – Real-time transcription
 * `scripts/inference.py` – File transcription
 * `scripts/commit-msg` – Commit validator
