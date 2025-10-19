@@ -126,3 +126,5 @@ the ci workflow runs automated tests, linting, and formatting checks on every pu
 - ruff linting (including unused code detection)
 - ruff formatting checks
 - docker image build and test
+
+note: local git hooks can enforce checks before commit/push; see docs/testing.md for setup.
