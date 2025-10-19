@@ -10,12 +10,12 @@ import sys
 
 def run_command(cmd, timeout=None):
     """Run command with venv activated"""
-    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python3")
+    venv_bin = os.path.join(os.path.dirname(__file__), "venv", "bin")
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.dirname(__file__)
-    full_cmd = [venv_python] + cmd
+    env["PATH"] = f"{venv_bin}:{env['PATH']}"
     result = subprocess.run(
-        full_cmd,
+        cmd,
         check=False,
         cwd=os.path.dirname(__file__),
         capture_output=True,
@@ -29,7 +29,7 @@ def run_command(cmd, timeout=None):
 def run_unit_tests():
     """Run unit tests"""
     print("Running unit tests...")
-    result = run_command(["-m", "unittest", "tests.test_unit"], timeout=60)
+    result = run_command(["python", "-m", "unittest", "tests.test_unit"], timeout=60)
     print(result.stdout)
     if result.stderr:
         print("Errors:", result.stderr)
@@ -39,11 +39,12 @@ def run_unit_tests():
 def run_transcription_test():
     """Run transcription test (requires audio input)"""
     print("Running transcription test (this will attempt to record audio)...")
-    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python3")
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.dirname(__file__)
+    venv_bin = os.path.join(os.path.dirname(__file__), "venv", "bin")
+    env["PATH"] = f"{venv_bin}:{env['PATH']}"
     result = subprocess.run(
-        [venv_python, "tests/test_transcription.py", "--model_type", "whisper"],
+        ["python", "tests/test_transcription.py", "--model_type", "whisper"],
         check=False,
         cwd=os.path.dirname(__file__),
         capture_output=True,
