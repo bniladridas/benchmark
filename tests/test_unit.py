@@ -70,8 +70,9 @@ class TestHarpertoken(unittest.TestCase):
     def test_full_pipeline_whisper(self):
         """Test the full pipeline for whisper model with dummy audio"""
         import torch
-        from harpertoken.model import SpeechModel
         from transformers import WhisperProcessor
+
+        from harpertoken.model import SpeechModel
 
         # Use tiny model for testing
         model = SpeechModel(model_type="whisper")
