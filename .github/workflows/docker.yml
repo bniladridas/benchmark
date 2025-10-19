@@ -1,7 +1,7 @@
 ---
 name: docker
 
-on:
+"on":
   push:
     branches: [main]
   pull_request:
@@ -36,8 +36,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: >
-            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          images:
+            - ghcr.io/${{ github.repository_owner }}/
+              ${{ github.event.repository.name }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -55,4 +56,4 @@ jobs:
           IMAGE=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
           docker run --rm "$IMAGE" \
             python -c "import harpertoken; print('Import successful')"
-          docker run --rm "$IMAGE" python -m unittest tests.test_unit"
+          docker run --rm "$IMAGE" python -m unittest tests.test_unit
