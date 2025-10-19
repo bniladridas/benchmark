@@ -91,13 +91,13 @@ test_transcription()  # uses default whisper
 build the docker image:
 
 ```bash
-docker build -t speech-model .
+docker build -t benchmark .
 ```
 
 run the container:
 
 ```bash
-docker run speech-model
+docker run benchmark
 ```
 
 ## ci workflow
