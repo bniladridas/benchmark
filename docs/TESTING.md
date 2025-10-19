@@ -62,9 +62,9 @@ cp scripts/pre-push .git/hooks/pre-push
 chmod +x .git/hooks/pre-push
 ```
 
-This will run `ruff check .` before each push and abort if there are issues.
+This will run `ruff check .` and `ruff format --check .` before each push and abort if there are linting or formatting issues.
 
-Note: The pre-push hook runs during the push operation, not during commit. Since the code passed `ruff check .` (no linting issues), the hook allowed the push to proceed. If there were issues, it would have aborted the push with an error message.
+Note: The pre-push hook runs during the push operation, not during commit. Since the code passed the Ruff checks (no linting or formatting issues), the hook allowed the push to proceed. If there were issues, it would have aborted the push with an error message.
 
 The pre-push hook is a script in the repo that users need to install locally to .git/hooks/pre-push for it to run before pushes. Since it's not installed in the repo's .git/hooks (as hooks are local), it didn't run during our push. CI will still catch issues, but for local enforcement, developers should run the above commands to enable it.
 
