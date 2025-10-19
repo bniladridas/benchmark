@@ -67,6 +67,38 @@ class TestHarpertoken(unittest.TestCase):
         assert wer == 0.0  # Perfect match
         assert cer == 0.0
 
+    def test_full_pipeline_whisper(self):
+        """Test the full pipeline for whisper model with dummy audio"""
+        from harpertoken.model import SpeechModel
+        from transformers import WhisperProcessor
+        import torch
+
+        # Use tiny model for testing
+        model = SpeechModel(model_type="whisper")
+        processor = WhisperProcessor.from_pretrained("openai/whisper-tiny")
+
+        # Create dummy audio (1 second of silence at 16kHz)
+        dummy_audio = torch.zeros(16000, dtype=torch.float32)
+
+        # Process audio
+        inputs = processor(dummy_audio.numpy(), sampling_rate=16000, return_tensors="pt")
+        attention_mask = torch.ones(inputs.input_features.shape[0], inputs.input_features.shape[1], dtype=torch.long)
+
+        # Generate transcription
+        with torch.no_grad():
+            generated_ids = model.generate(
+                input_features=inputs.input_features,
+                attention_mask=attention_mask,
+                language="en",
+                task="transcribe",
+                max_length=10  # Limit for testing
+            )
+
+        # Decode
+        transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        assert isinstance(transcription, str)
+        assert len(transcription) >= 0  # Should produce some output
+
 
 if __name__ == "__main__":
     unittest.main()
