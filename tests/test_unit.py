@@ -57,10 +57,11 @@ class TestHarpertoken(unittest.TestCase):
         predictions = ["hello", "world"]
         labels = ["hello", "world"]
         
-        metrics = compute_metrics(predictions, labels)
-        self.assertIn('accuracy', metrics)
-        self.assertIn('wer', metrics)
-        self.assertIsInstance(metrics['accuracy'], float)
+        wer, cer = compute_metrics(predictions, labels)
+        self.assertIsInstance(wer, float)
+        self.assertIsInstance(cer, float)
+        self.assertEqual(wer, 0.0)  # Perfect match
+        self.assertEqual(cer, 0.0)
 
 if __name__ == '__main__':
     unittest.main()
