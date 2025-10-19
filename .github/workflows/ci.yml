@@ -39,15 +39,3 @@ jobs:
       run: |
         source venv/bin/activate
         python run_tests.py
-    - name: create issue on failure
-      if: failure()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: 'CI failed on ${{ matrix.python-version }}',
-            body: 'The CI pipeline failed for Python ${{ matrix.python-version }}. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n## Possible fixes\n- Ensure all dependencies are compatible with Python ${{ matrix.python-version }}\n- Check for linting issues with `ruff check .`\n- Verify tests pass locally with `python run_tests.py`\n- Review recent changes for breaking modifications',
-            labels: ['ci-failure', 'bug']
-          })

@@ -44,7 +44,7 @@ def run_transcription_test():
     venv_bin = os.path.join(os.path.dirname(__file__), "venv", "bin")
     env["PATH"] = f"{venv_bin}:{env['PATH']}"
     result = subprocess.run(
-        ["python", "tests/test_transcription.py", "--model_type", "whisper"],
+        ["python", "tests/test_transcription.py", "--model_type", "whisper"],  # noqa: S607
         check=False,
         cwd=os.path.dirname(__file__),
         capture_output=True,
