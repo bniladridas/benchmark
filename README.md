@@ -128,12 +128,12 @@ chmod +x .git/hooks/commit-msg
 Commit messages must follow the format: `type: description`
 
 - **Types**: feat, fix, docs, style, refactor, test, chore
-- First line: lowercase, ≤60 characters
+- First line: lowercase, ≤40 characters
 - Example: `feat: add new transcription feature`
 
 ### History Cleanup
 
-To rewrite existing commit messages (lowercase, truncate, remove #1 mentions):
+To rewrite existing commit messages (lowercase, truncate to 40 chars, remove #1 mentions):
 
 ```bash
 bash scripts/rewrite_msg.sh
