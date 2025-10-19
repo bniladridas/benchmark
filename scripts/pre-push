@@ -9,4 +9,9 @@ if ! ruff check .; then
     exit 1
 fi
 
-echo "Ruff check passed."
+if ! ruff format --check .; then
+    echo "Ruff format check failed. Please run 'ruff format .' to fix."
+    exit 1
+fi
+
+echo "Ruff checks passed."
