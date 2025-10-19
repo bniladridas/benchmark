@@ -1,3 +1,11 @@
+## files
+
+- harpertoken/ – core modules
+- tests/ – test scripts
+- scripts/ – utilities
+- main.py – entry point
+- requirements.txt – dependencies
+
 ## usage
 
 ```python
