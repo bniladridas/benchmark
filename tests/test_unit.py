@@ -7,7 +7,7 @@ import warnings
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 # Suppress model weight warnings
-warnings.filterwarnings("ignore", message="Some weights.*were not initialized")
+warnings.filterwarnings("ignore", category=UserWarning)
 
 class TestHarpertoken(unittest.TestCase):
     
