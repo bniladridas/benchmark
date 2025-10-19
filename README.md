@@ -67,6 +67,8 @@ train_model(model_type='whisper')  # or 'wav2vec2'
 
 ## testing the model
 
+see docs/testing.md for detailed testing instructions.
+
 ```bash
 # activate virtual environment
 source venv/bin/activate
