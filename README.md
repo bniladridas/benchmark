@@ -1,5 +1,3 @@
-real-time asr using fine-tuned whisper and wav2vec2.
-
 ## usage
 
 ```python
