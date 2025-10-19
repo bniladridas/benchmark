@@ -10,15 +10,23 @@ import sys
 
 def run_command(cmd, timeout=None):
     """Run command with venv activated"""
-    venv_bin = os.path.join(os.path.dirname(__file__), "venv", "bin")
-    venv_python = os.path.join(venv_bin, "python3")
+    # Resolve project directory robustly even if __file__ is empty
+    project_dir = os.path.abspath(os.path.dirname(__file__) or os.getcwd())
+
+    # Prefer the repository venv python, but fall back safely
+    venv_bin = os.path.join(project_dir, "venv", "bin")
+    candidate_python = os.path.join(venv_bin, "python3")
+    if not os.path.exists(candidate_python):
+        candidate_python = sys.executable or "python3"
+
     env = os.environ.copy()
-    env["PYTHONPATH"] = os.path.dirname(__file__)
-    full_cmd = [venv_python] + cmd
+    env["PYTHONPATH"] = project_dir
+
+    full_cmd = [candidate_python] + cmd
     result = subprocess.run(
         full_cmd,
         check=False,
-        cwd=os.path.dirname(__file__),
+        cwd=project_dir,
         capture_output=True,
         text=True,
         env=env,
@@ -41,7 +49,7 @@ def run_transcription_test():
     """Run transcription test (requires audio input)"""
     print("Running transcription test (this will attempt to record audio)...")
     result = run_command(
-        ["tests/test_transcription.py", "--model_type", "whisper"],
+        ["-u", "tests/test_transcription.py", "--model_type", "whisper"],
         timeout=60,
     )
     print(result.stdout)

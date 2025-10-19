@@ -38,3 +38,13 @@ class SpeechModel(nn.Module):
             if labels is not None:
                 return self.model(input_features=inputs, labels=labels)
             return self.model(input_features=inputs)
+
+    def generate(self, **kwargs):
+        """Generate output tokens for transcription.
+
+        For Whisper models, this forwards directly to the underlying
+        WhisperForConditionalGeneration.generate with the provided kwargs.
+        """
+        if self.model_type == "whisper":
+            return self.model.generate(**kwargs)
+        raise NotImplementedError("generate is only supported for 'whisper' in SpeechModel")
