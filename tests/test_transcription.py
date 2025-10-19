@@ -3,9 +3,15 @@ from transformers import WhisperForConditionalGeneration, WhisperProcessor
 import torch
 import argparse
 
-def test_transcription(model_type='whisper'):
-    # Load pretrained model for testing
-    model_name = 'harpertoken/harpertokenASR'
+def test_transcription(model_type='whisper', use_pretrained=False):
+    # Load model for testing
+    if use_pretrained:
+        model_name = 'harpertoken/harpertokenASR'
+    else:
+        if model_type == 'whisper':
+            model_name = 'openai/whisper-small'
+        else:
+            model_name = 'facebook/wav2vec2-base-960h'
     
     model = WhisperForConditionalGeneration.from_pretrained(model_name)
     processor = WhisperProcessor.from_pretrained(model_name)
@@ -39,6 +45,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_type', type=str, default='whisper',
                         help="Model type to use (whisper or wav2vec2)")
+    parser.add_argument('--use_pretrained', action='store_true',
+                        help="Use pretrained harpertokenASR model")
     args = parser.parse_args()
     
-    test_transcription(model_type=args.model_type)
+    test_transcription(model_type=args.model_type, use_pretrained=args.use_pretrained)

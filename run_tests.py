@@ -31,7 +31,7 @@ def run_transcription_test():
     venv_python = os.path.join(os.path.dirname(__file__), 'venv', 'bin', 'python')
     env = os.environ.copy()
     env['PYTHONPATH'] = os.path.dirname(__file__)
-    result = subprocess.run([venv_python, 'tests/test_transcription.py', '--model_type', 'whisper'],
+    result = subprocess.run([venv_python, 'tests/test_transcription.py', '--model_type', 'whisper', '--use_pretrained'],
                             cwd=os.path.dirname(__file__), capture_output=True, text=True, env=env, timeout=30)
     print(result.stdout)
     if result.stderr:
