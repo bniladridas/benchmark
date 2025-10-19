@@ -1,0 +1,24 @@
+#!/bin/bash
+
+MSG_FILE=$1
+MSG=$(cat "$MSG_FILE")
+
+# Check if starts with conventional commit type
+if ! echo "$MSG" | grep -qE "^(feat|fix|docs|style|refactor|test|chore): "; then
+    echo "Error: Commit message must start with a type: feat, fix, docs, style, refactor, test, chore"
+    exit 1
+fi
+
+# Check if first line is lowercase
+if echo "$MSG" | head -1 | grep -q '[A-Z]'; then
+    echo "Error: First line of commit message must be lowercase"
+    exit 1
+fi
+
+# Check if first line is ≤60 characters
+if [ $(echo "$MSG" | head -1 | wc -c) -gt 60 ]; then
+    echo "Error: First line of commit message must be ≤60 characters"
+    exit 1
+fi
+
+exit 0

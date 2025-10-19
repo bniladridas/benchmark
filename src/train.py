@@ -1,9 +1,9 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.optim import AdamW, lr_scheduler
-from dataset import LiveSpeechDataset
-from model import SpeechModel
-from evaluate import compute_metrics
+from src.dataset import LiveSpeechDataset
+from src.model import SpeechModel
+from src.evaluate import compute_metrics
 import os
 from datetime import datetime
 from huggingface_hub import HfApi, login

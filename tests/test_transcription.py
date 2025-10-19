@@ -1,4 +1,4 @@
-from dataset import LiveSpeechDataset
+from src.dataset import LiveSpeechDataset
 from transformers import WhisperForConditionalGeneration
 import torch
 
