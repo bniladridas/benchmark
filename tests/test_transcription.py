@@ -1,19 +1,21 @@
 from harpertoken.dataset import LiveSpeechDataset
-from transformers import WhisperForConditionalGeneration
+from transformers import WhisperForConditionalGeneration, WhisperProcessor
 import torch
+import argparse
 
-def test_transcription():
-    # Load fine-tuned model
-    model = WhisperForConditionalGeneration.from_pretrained(
-        'models/speech_recognition_ai_fine_tune_20250224_233946'
-    )
+def test_transcription(model_type='whisper'):
+    # Load pretrained model for testing
+    model_name = 'harpertoken/harpertokenASR'
+    
+    model = WhisperForConditionalGeneration.from_pretrained(model_name)
+    processor = WhisperProcessor.from_pretrained(model_name)
     
     # Record new audio
     dataset = LiveSpeechDataset()
     audio = dataset.record_audio()
     
     # Process audio
-    inputs = dataset.processor(
+    inputs = processor(
         audio,
         sampling_rate=16000,
         return_tensors="pt"
@@ -26,7 +28,7 @@ def test_transcription():
         )
     
     # Decode transcription
-    transcription = dataset.processor.batch_decode(
+    transcription = processor.batch_decode(
         generated_ids,
         skip_special_tokens=True
     )[0]
@@ -34,4 +36,9 @@ def test_transcription():
     print(f'Transcription: {transcription}')
 
 if __name__ == "__main__":
-    test_transcription()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_type', type=str, default='whisper',
+                        help="Model type to use (whisper or wav2vec2)")
+    args = parser.parse_args()
+    
+    test_transcription(model_type=args.model_type)
