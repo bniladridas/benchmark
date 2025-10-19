@@ -1,0 +1,84 @@
+---
+version: 2
+updates:
+  # Enable version updates for pip
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "bniladridas"
+    assignees:
+      - "bniladridas"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+    # Group related updates together
+    groups:
+      pytorch:
+        patterns:
+          - "torch*"
+      transformers:
+        patterns:
+          - "transformers"
+          - "tokenizers"
+          - "safetensors"
+      ml-libs:
+        patterns:
+          - "scikit-learn"
+          - "numpy"
+          - "scipy"
+      audio:
+        patterns:
+          - "librosa"
+          - "sounddevice"
+          - "torchaudio"
+      data:
+        patterns:
+          - "datasets"
+          - "pandas"
+          - "pyarrow"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "bniladridas"
+    assignees:
+      - "bniladridas"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Enable version updates for npm (semantic-release)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "bniladridas"
+    assignees:
+      - "bniladridas"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"

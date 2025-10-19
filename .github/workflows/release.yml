@@ -25,7 +25,8 @@ jobs:
           node-version: '18'
       - name: install semantic-release and plugins
         run: |
-          npm install -g semantic-release @semantic-release/exec @semantic-release/git
+          npm install -g semantic-release @semantic-release/exec \
+            @semantic-release/git
       - name: semantic release
         run: npx semantic-release
         env:

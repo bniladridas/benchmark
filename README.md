@@ -146,6 +146,15 @@ versions are automatically bumped and tagged based on conventional commit messag
 
 releases are created on pushes to the main branch. check the [releases page](https://github.com/bniladridas/benchmark/releases) for version history.
 
+## dependencies
+
+this project uses:
+- `requirements.txt` - minimum version constraints for flexibility
+- `requirements-lock.txt` - exact versions tested across all platforms
+- dependabot - automated dependency updates via pull requests
+
+dependabot creates weekly prs to update dependencies, grouped by category (pytorch, transformers, audio, etc.) and tested across python 3.8-3.12 on ubuntu, macos, and windows.
+
 ## ci workflow
 
 the ci workflow runs automated tests, linting, and formatting checks on every push and pull request to the main branch using github actions. it includes:
