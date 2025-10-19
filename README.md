@@ -117,4 +117,9 @@ releases are created on pushes to the main branch. check the [releases page](htt
 
 ## ci workflow
 
-the ci workflow runs tests on every push and pull request to the main branch using github actions.
+the ci workflow runs automated tests, linting, and formatting checks on every push and pull request to the main branch using github actions. it includes:
+
+- unit tests across python 3.8-3.12
+- ruff linting (including unused code detection)
+- ruff formatting checks
+- docker image build and test
