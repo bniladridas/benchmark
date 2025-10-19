@@ -37,7 +37,7 @@ jobs:
           python run_tests.py
       - name: create issue on failure
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.ISSUE_TOKEN }}
           script: |
