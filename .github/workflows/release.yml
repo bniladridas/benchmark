@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   release:
@@ -11,14 +11,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: create release
-      uses: actions/create-release@v1
+      with:
+        fetch-depth: 0
+    - name: semantic release
+      uses: cycjimmy/semantic-release-action@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Automated release for ${{ github.ref }}
-        draft: false
-        prerelease: false
