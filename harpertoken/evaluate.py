@@ -1,7 +1,3 @@
-from sklearn.metrics import accuracy_score
-import numpy as np
-
-
 def compute_metrics(predictions, references):
     # Word Error Rate (WER) calculation
     wer = calculate_wer(predictions, references)
