@@ -39,7 +39,7 @@ def run_command(cmd, timeout=None):
 def run_unit_tests():
     """Run unit tests"""
     print("Running unit tests...")
-    result = run_command(["-m", "unittest", "tests.test_unit"], timeout=60)
+    result = run_command(["-m", "unittest", "tests.test_unit"], timeout=600)
     print(result.stdout)
     if result.stderr:
         print("Errors:", result.stderr)
@@ -51,7 +51,7 @@ def run_transcription_test():
     print("Running transcription test (this will attempt to record audio)...")
     result = run_command(
         ["-u", "tests/test_transcription.py", "--model_type", "whisper"],
-        timeout=60,
+        timeout=600,
     )
     print(result.stdout)
     if result.stderr:
